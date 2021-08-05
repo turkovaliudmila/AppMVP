@@ -7,7 +7,8 @@ import ru.geekbrains.appmvp.view.UserView
 
 class UserPresenter(private val userInfo: GithubUser?, private val router: Router) : MvpPresenter<UserView>() {
 
-    fun init() {
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
         val userInfo_: GithubUser = userInfo ?: GithubUser("")
         viewState.setUserInfo(userInfo_)
     }

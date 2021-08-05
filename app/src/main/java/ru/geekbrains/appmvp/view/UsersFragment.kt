@@ -3,6 +3,7 @@ package ru.geekbrains.appmvp.view
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -13,7 +14,7 @@ import ru.geekbrains.appmvp.presenter.UsersPresenter
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     companion object {
-        fun newInstance() = UsersFragment()
+        fun newInstance() : Fragment = UsersFragment()
     }
 
     val presenter: UsersPresenter by moxyPresenter { UsersPresenter(GithubUsersRepo(), App.instance.router) }

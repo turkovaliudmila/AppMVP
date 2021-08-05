@@ -2,8 +2,9 @@ package ru.geekbrains.appmvp.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.appmvp.App
@@ -24,9 +25,9 @@ class UserFragment(): MvpAppCompatFragment(), UserView, BackButtonListener {
 
         const val BUNDLE_EXTRA = "USER_INFO"
 
-        fun newInstance(bundle: Bundle): UserFragment {
+        fun newInstance(githubUser: GithubUser): Fragment {
             val fragment = UserFragment()
-            fragment.arguments = bundle
+            fragment.arguments = bundleOf(BUNDLE_EXTRA to githubUser)
             return fragment
         }
     }
@@ -39,11 +40,6 @@ class UserFragment(): MvpAppCompatFragment(), UserView, BackButtonListener {
     override fun onDestroyView() {
         super.onDestroyView()
         vb = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        presenter.init()
     }
 
     override fun setUserInfo(githubUser: GithubUser) {
