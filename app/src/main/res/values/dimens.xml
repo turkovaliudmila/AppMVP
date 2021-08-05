@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="padding_layout">15dp</dimen>
+    <dimen name="margin_start_login">16dp</dimen>
+    <dimen name="padding_top_rv_users">16dp</dimen>
+    <dimen name="padding_bottom_rv_users">16dp</dimen>
+    <dimen name="margin_top_login">15dp</dimen>
+    <dimen name="login_text_size">20sp</dimen>
 </resources>
