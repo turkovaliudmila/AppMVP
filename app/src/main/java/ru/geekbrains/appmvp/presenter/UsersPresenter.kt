@@ -1,6 +1,8 @@
 package ru.geekbrains.appmvp.presenter
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import moxy.MvpPresenter
 import ru.geekbrains.appmvp.view.AndroidScreens
 import ru.geekbrains.appmvp.model.GithubUser
@@ -9,6 +11,9 @@ import ru.geekbrains.appmvp.view.UserItemView
 import ru.geekbrains.appmvp.view.UsersView
 
 class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) : MvpPresenter<UsersView>() {
+
+    private val disposables = CompositeDisposable()
+
     class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -34,10 +39,21 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         }
     }
 
-    fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+    private fun loadData() {
+        usersRepo
+            .getUsers()
+            .subscribe(
+                { usersListPresenter.users.addAll(it) },
+                viewState::showError
+            )
+            .addTo(disposables)
+
         viewState.updateList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.clear()
     }
 
     fun backPressed(): Boolean {

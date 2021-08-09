@@ -1,5 +1,8 @@
 package ru.geekbrains.appmvp.model
 
+import io.reactivex.Single
+
+
 class GithubUsersRepo {
     private val repositories = listOf(
         GithubUser("login1"),
@@ -9,7 +12,7 @@ class GithubUsersRepo {
         GithubUser("login5")
     )
 
-    fun getUsers() : List<GithubUser> {
-        return repositories
+    fun getUsers() : Single<List<GithubUser>> {
+        return Single.just(repositories)
     }
 }

@@ -3,12 +3,14 @@ package ru.geekbrains.appmvp.view
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.appmvp.App
 import ru.geekbrains.appmvp.databinding.FragmentUsersBinding
+import ru.geekbrains.appmvp.model.GithubUser
 import ru.geekbrains.appmvp.model.GithubUsersRepo
 import ru.geekbrains.appmvp.presenter.UsersPresenter
 
@@ -40,6 +42,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun showError(error: Throwable) {
+        Toast.makeText(requireContext(), error.message, Toast.LENGTH_LONG).show()
     }
 
     override fun backPressed() = presenter.backPressed()
