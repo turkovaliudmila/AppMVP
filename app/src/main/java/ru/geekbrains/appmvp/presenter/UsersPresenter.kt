@@ -1,16 +1,21 @@
 package ru.geekbrains.appmvp.presenter
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import moxy.MvpPresenter
-import ru.geekbrains.appmvp.view.AndroidScreens
 import ru.geekbrains.appmvp.model.GithubUser
-import ru.geekbrains.appmvp.model.GithubUsersRepo
+import ru.geekbrains.appmvp.model.IGithubUsersRepo
+import ru.geekbrains.appmvp.view.AndroidScreens
 import ru.geekbrains.appmvp.view.UserItemView
 import ru.geekbrains.appmvp.view.UsersView
 
-class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) : MvpPresenter<UsersView>() {
+class UsersPresenter(
+    private val uiScheduler: Scheduler,
+    private val usersRepo: IGithubUsersRepo,
+    private val router: Router
+) : MvpPresenter<UsersView>() {
 
     private val disposables = CompositeDisposable()
 
@@ -22,7 +27,8 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            view.setLogin(user.login)
+            user.login?.let { view.setLogin(it) }
+            user.avatarUrl?.let { view.loadAvatar(it) }
         }
     }
 
@@ -35,20 +41,19 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
         usersListPresenter.itemClickListener = { itemView ->
             val userInfo = usersListPresenter.users[itemView.pos]
-            router.navigateTo(AndroidScreens.user(userInfo))
+            router.navigateTo(AndroidScreens.repos(userInfo.repos_url!!))
         }
     }
 
     private fun loadData() {
-        usersRepo
-            .getUsers()
-            .subscribe(
-                { usersListPresenter.users.addAll(it) },
-                viewState::showError
-            )
+        usersRepo.getUsers()
+            .observeOn(uiScheduler)
+            .subscribe({ repos ->
+                usersListPresenter.users.clear()
+                usersListPresenter.users.addAll(repos)
+                viewState.updateList()
+            }, viewState::showError)
             .addTo(disposables)
-
-        viewState.updateList()
     }
 
     override fun onDestroy() {

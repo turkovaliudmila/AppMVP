@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_full_name"
+        android:layout_marginStart="20dp"
+        android:textSize="@dimen/full_name_text_size"
+        android:textStyle="bold"
+        tools:text="@string/full_name_tools_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_label_forks_count"
+        android:layout_marginStart="@dimen/margin_start_label_forks_count"
+        android:textSize="@dimen/forks_count_label_text_size"
+        android:textStyle="bold"
+        android:text="@string/forks_count_label_text"
+        tools:text="@string/forks_count_label_tools_text"/>
+
+    <TextView
+        android:id="@+id/forks_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start_forks_count"
+        android:layout_marginTop="@dimen/margin_top_forks_count"
+        android:textSize="@dimen/forks_count_text_size"
+        android:textStyle="bold"
+        tools:text="@string/forks_count_tools_text" />
+
+</LinearLayout>

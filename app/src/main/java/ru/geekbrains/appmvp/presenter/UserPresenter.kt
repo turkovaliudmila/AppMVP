@@ -9,8 +9,9 @@ class UserPresenter(private val userInfo: GithubUser?, private val router: Route
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        val userInfo_: GithubUser = userInfo ?: GithubUser("")
+        val userInfo_: GithubUser = userInfo ?: GithubUser()
         viewState.setUserInfo(userInfo_)
+
     }
 
     fun backPressed(): Boolean {

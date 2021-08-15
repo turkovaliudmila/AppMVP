@@ -4,4 +4,9 @@
     <string name="counter_two">Счетчик 2</string>
     <string name="counter_three">Счетчик 3</string>
     <string name="button_text">0</string>
+    <string name="full_name_tools_text">Full name</string>
+    <string name="description_tools_text">Description</string>
+    <string name="forks_count_tools_text">5</string>
+    <string name="forks_count_label_tools_text">forks count:</string>
+    <string name="forks_count_label_text">Forks count :</string>
 </resources>

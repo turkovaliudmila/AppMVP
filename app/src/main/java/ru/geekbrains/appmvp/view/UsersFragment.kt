@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.reactivex.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.appmvp.App
 import ru.geekbrains.appmvp.databinding.FragmentUsersBinding
-import ru.geekbrains.appmvp.model.GithubUser
-import ru.geekbrains.appmvp.model.GithubUsersRepo
+import ru.geekbrains.appmvp.model.*
 import ru.geekbrains.appmvp.presenter.UsersPresenter
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
@@ -19,7 +19,13 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() : Fragment = UsersFragment()
     }
 
-    val presenter: UsersPresenter by moxyPresenter { UsersPresenter(GithubUsersRepo(), App.instance.router) }
+    val presenter: UsersPresenter by moxyPresenter {
+        UsersPresenter(
+            AndroidSchedulers.mainThread(),
+            RetrofitGithubUsersRepo(ApiHolder.api),
+            App.instance.router
+        )
+    }
     var adapter: UsersRVAdapter? = null
 
     private var vb: FragmentUsersBinding? = null
@@ -36,7 +42,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun init() {
         vb?.rvUsers?.layoutManager = LinearLayoutManager(context)
-        adapter = UsersRVAdapter(presenter.usersListPresenter)
+        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
         vb?.rvUsers?.adapter = adapter
     }
 

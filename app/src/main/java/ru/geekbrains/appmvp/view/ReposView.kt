@@ -5,7 +5,7 @@ import moxy.viewstate.strategy.SingleStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(SingleStateStrategy::class)
-interface UsersView : MvpView {
+interface ReposView : MvpView {
     fun init()
     fun updateList()
     fun showError(error: Throwable)
