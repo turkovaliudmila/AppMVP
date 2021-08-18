@@ -41,7 +41,7 @@ class UsersPresenter(
 
         usersListPresenter.itemClickListener = { itemView ->
             val userInfo = usersListPresenter.users[itemView.pos]
-            router.navigateTo(AndroidScreens.repos(userInfo.repos_url!!))
+            router.navigateTo(AndroidScreens.repos(userInfo.reposUrl!!))
         }
     }
 
