@@ -13,32 +13,40 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrains.appmvp.App
 import ru.geekbrains.appmvp.databinding.FragmentReposBinding
 import ru.geekbrains.appmvp.model.ApiHolder
-import ru.geekbrains.appmvp.model.RetrofitGithubUsersRepo
+import ru.geekbrains.appmvp.model.GithubUser
+import ru.geekbrains.appmvp.model.RetrofitGithubRepositoriesRepo
+import ru.geekbrains.appmvp.model.cache.RoomRepositoriesCache
+import ru.geekbrains.appmvp.model.network.AndroidNetworkStatus
+import ru.geekbrains.appmvp.model.storage.Database
 import ru.geekbrains.appmvp.presenter.ReposPresenter
 
 class ReposFragment : MvpAppCompatFragment(), ReposView, BackButtonListener {
 
-    private val repo_url: String? by lazy {
-        arguments?.getString(BUNDLE_EXTRA)
+    private val user: GithubUser? by lazy {
+        arguments?.getParcelable(BUNDLE_EXTRA)
     }
 
     private var vb: FragmentReposBinding? = null
     private val presenter: ReposPresenter by moxyPresenter {
         ReposPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder.api),
-            repo_url!!,
+            RetrofitGithubRepositoriesRepo(
+                ApiHolder.api,
+                AndroidNetworkStatus(requireContext()),
+                RoomRepositoriesCache(Database.getInstance())
+            ),
+            user!!,
             App.instance.router
         )
     }
 
     companion object {
 
-        const val BUNDLE_EXTRA = "REPO_URL"
+        const val BUNDLE_EXTRA = "ARG_USER"
 
-        fun newInstance(repo_url: String): Fragment {
+        fun newInstance(user: GithubUser): Fragment {
             val fragment = ReposFragment()
-            fragment.arguments = bundleOf(BUNDLE_EXTRA to repo_url)
+            fragment.arguments = bundleOf(BUNDLE_EXTRA to user)
             return fragment
         }
     }
