@@ -12,17 +12,24 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrains.appmvp.App
 import ru.geekbrains.appmvp.databinding.FragmentUsersBinding
 import ru.geekbrains.appmvp.model.*
+import ru.geekbrains.appmvp.model.cache.RoomUsersCache
+import ru.geekbrains.appmvp.model.network.AndroidNetworkStatus
+import ru.geekbrains.appmvp.model.storage.Database
 import ru.geekbrains.appmvp.presenter.UsersPresenter
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     companion object {
-        fun newInstance() : Fragment = UsersFragment()
+        fun newInstance(): Fragment = UsersFragment()
     }
 
     val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder.api),
+            RetrofitGithubUsersRepo(
+                ApiHolder.api,
+                AndroidNetworkStatus(requireContext()),
+                RoomUsersCache(Database.getInstance())
+            ),
             App.instance.router
         )
     }
@@ -30,7 +37,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     private var vb: FragmentUsersBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         FragmentUsersBinding.inflate(inflater, container, false).also {
             vb = it
         }.root

@@ -51,8 +51,8 @@ class RepoFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
     }
 
     override fun setRepoInfo(repoInfo: UserRepo) {
-        vb?.fullName?.text = repoInfo.full_name
-        vb?.forksCount?.text = repoInfo.forks_count.toString()
+        vb?.fullName?.text = repoInfo.fullName
+        vb?.forksCount?.text = repoInfo.forksCount.toString()
     }
 
     override fun backPressed() = presenter.backPressed()

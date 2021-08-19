@@ -5,7 +5,8 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import moxy.MvpPresenter
-import ru.geekbrains.appmvp.model.IGithubUsersRepo
+import ru.geekbrains.appmvp.model.GithubUser
+import ru.geekbrains.appmvp.model.IGithubRepositoriesRepo
 import ru.geekbrains.appmvp.model.UserRepo
 import ru.geekbrains.appmvp.view.AndroidScreens
 import ru.geekbrains.appmvp.view.RepoItemView
@@ -13,8 +14,8 @@ import ru.geekbrains.appmvp.view.ReposView
 
 class ReposPresenter(
     private val uiScheduler: Scheduler,
-    private val usersRepo: IGithubUsersRepo,
-    private val repos_url: String,
+    private val usersRepo: IGithubRepositoriesRepo,
+    private val user: GithubUser,
     private val router: Router
 ) : MvpPresenter<ReposView>() {
 
@@ -28,7 +29,7 @@ class ReposPresenter(
 
         override fun bindView(view: RepoItemView) {
             val repo = repos[view.pos]
-            repo.full_name?.let { view.setFullName(it) }
+            repo.fullName?.let { view.setFullName(it) }
             repo.description?.let { view.setDescription(it) }
         }
     }
@@ -47,7 +48,7 @@ class ReposPresenter(
     }
 
     private fun loadData() {
-        usersRepo.getUserRepos(repos_url)
+        usersRepo.getUserRepos(user)
             .observeOn(uiScheduler)
             .subscribe({ repos ->
                 reposListPresenter.repos.clear()
