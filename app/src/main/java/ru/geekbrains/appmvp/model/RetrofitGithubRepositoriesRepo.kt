@@ -18,7 +18,7 @@ class RetrofitGithubRepositoriesRepo(
                     api.getUserRepos(url)
                         .flatMap { repositories ->
                             Single.fromCallable {
-                                val roomUser = user.login?.let { cache.findByLogin(it) }
+                                user.login?.let { cache.findByLogin(it) }
                                     ?: throw RuntimeException("No such user in cache")
                                 val roomRepos = repositories.map {
                                     RoomGithubRepository(

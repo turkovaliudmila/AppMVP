@@ -7,17 +7,11 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.appmvp.App
 import ru.geekbrains.appmvp.databinding.FragmentReposBinding
-import ru.geekbrains.appmvp.model.ApiHolder
 import ru.geekbrains.appmvp.model.GithubUser
-import ru.geekbrains.appmvp.model.RetrofitGithubRepositoriesRepo
-import ru.geekbrains.appmvp.model.cache.RoomRepositoriesCache
-import ru.geekbrains.appmvp.model.network.AndroidNetworkStatus
-import ru.geekbrains.appmvp.model.storage.Database
 import ru.geekbrains.appmvp.presenter.ReposPresenter
 
 class ReposFragment : MvpAppCompatFragment(), ReposView, BackButtonListener {
@@ -29,15 +23,8 @@ class ReposFragment : MvpAppCompatFragment(), ReposView, BackButtonListener {
     private var vb: FragmentReposBinding? = null
     private val presenter: ReposPresenter by moxyPresenter {
         ReposPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGithubRepositoriesRepo(
-                ApiHolder.api,
-                AndroidNetworkStatus(requireContext()),
-                RoomRepositoriesCache(Database.getInstance())
-            ),
-            user!!,
-            App.instance.router
-        )
+            user!!
+        ).apply { App.instance.appComponent.inject(this) }
     }
 
     companion object {

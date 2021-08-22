@@ -8,6 +8,4 @@ object AndroidScreens : IScreens {
     override fun users() = FragmentScreen { UsersFragment.newInstance() }
     override fun repos(user: GithubUser) = FragmentScreen { ReposFragment.newInstance(user) }
     override fun repo(repo: UserRepo) = FragmentScreen { RepoFragment.newInstance(repo) }
-    override fun user(githubUser: GithubUser) =
-        FragmentScreen { UserFragment.newInstance(githubUser) }
 }

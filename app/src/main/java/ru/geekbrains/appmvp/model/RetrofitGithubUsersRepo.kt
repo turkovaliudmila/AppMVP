@@ -2,10 +2,8 @@ package ru.geekbrains.appmvp.model
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import ru.geekbrains.appmvp.model.cache.IRepositoriesCache
 import ru.geekbrains.appmvp.model.cache.IUserCache
 import ru.geekbrains.appmvp.model.network.INetworkStatus
-import ru.geekbrains.appmvp.model.storage.Database
 import ru.geekbrains.appmvp.model.storage.RoomGithubUser
 
 class RetrofitGithubUsersRepo(

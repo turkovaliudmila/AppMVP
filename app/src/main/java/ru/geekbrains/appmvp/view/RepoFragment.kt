@@ -20,9 +20,8 @@ class RepoFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
     private var vb: FragmentRepoBinding? = null
     private val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
-            repoInfo,
-            App.instance.router
-        )
+            repoInfo
+        ).apply { App.instance.appComponent.inject(this) }
     }
 
     companion object {
