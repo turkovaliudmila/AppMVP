@@ -20,9 +20,8 @@ class RepoFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
     private var vb: FragmentRepoBinding? = null
     private val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
-            repoInfo,
-            App.instance.router
-        )
+            repoInfo
+        ).apply { App.instance.appComponent.inject(this) }
     }
 
     companion object {
@@ -51,8 +50,8 @@ class RepoFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
     }
 
     override fun setRepoInfo(repoInfo: UserRepo) {
-        vb?.fullName?.text = repoInfo.full_name
-        vb?.forksCount?.text = repoInfo.forks_count.toString()
+        vb?.fullName?.text = repoInfo.fullName
+        vb?.forksCount?.text = repoInfo.forksCount.toString()
     }
 
     override fun backPressed() = presenter.backPressed()

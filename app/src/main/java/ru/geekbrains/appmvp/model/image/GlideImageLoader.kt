@@ -1,4 +1,4 @@
-package ru.geekbrains.appmvp.model
+package ru.geekbrains.appmvp.model.image
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
